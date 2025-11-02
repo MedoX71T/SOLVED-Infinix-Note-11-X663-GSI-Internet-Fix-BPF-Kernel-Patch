@@ -18,7 +18,7 @@ This fix involves applying the BPF Kernel Patcher to the stock boot image to ens
 
 ## **The Problem**
 
-When flashing any modern GSI (e.g., AOSP A15 or DerpFest A16) on the Infinix Note 11 (X663), the device boots correctly, but **Mobile Data (cellular internet) fails to work entirely**. This is a known issue on many MediaTek devices and requires a specific patch to the kernel within the `boot.img` to enable the necessary BPF layer for network function.
+When flashing any modern GSI (e.g., AOSP A15 or DerpFest A16) on the Infinix Note 11 (X663), the device boots correctly, but **WiFi - Mobile Data fails to work entirely BUT If we started HOTSPOT Sharing ... the other device can connect to our internet normally**. This is a known issue on many MediaTek devices and requires a specific patch to the kernel within the `boot.img` to enable the necessary BPF layer for network function.
 
 ---
 
@@ -50,18 +50,26 @@ The **`mtk-bpf-patcher`** has been successfully applied to the stock `boot.img` 
 3.  Open Command Prompt or PowerShell in your ADB/Fastboot directory.
 4.  Verify your device is connected:
     ```bash
-    fastboot devices
+    adb devices
     ```
-5.  Flash the patched boot image:
+5.  Restart to bootloader
+    ```bash
+    adb reboot bootloader  
+    ```
+6.  Enter fastbootd Mode
+    ```bash
+    fastboot reboot fastboot 
+    ```
+7.  Flash the patched boot image:
     ```bash
     fastboot flash boot patched_boot_bpf_fix.img
     ```
-6.  Once flashing is complete, reboot your device:
+8.  Once flashing is complete, reboot your device:
     ```bash
     fastboot reboot
     ```
 
-**Result:** Mobile Data connectivity should now be correctly enabled on your installed GSI.
+**Result:** WiFi - Mobile Data connectivity should now be correctly enabled on your installed GSI.
 
 ---
 
@@ -69,7 +77,7 @@ The **`mtk-bpf-patcher`** has been successfully applied to the stock `boot.img` 
 
 A special thanks to the communities and developers who make these fixes possible:
 
-* **@YourGitHubUsername**: For the testing, patching, and providing these files.
+* **MEDOX71T**: For the testing, patching, and providing these files.
 * **R0rt1z2**: For developing the essential [`mtk-bpf-patcher`](https://github.com/R0rt1z2/mtk-bpf-patcher) tool.
 * The wider **XDA and Project Treble communities** for continuous support and research.
 
